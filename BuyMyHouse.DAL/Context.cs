@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BuyMyHouse.Model.Entities;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +8,12 @@ using System.Threading.Tasks;
 
 namespace BuyMyHouse.DAL
 {
-    internal class Context
+    public class Context : DbContext
     {
+        public DbSet<House> Houses { get; set; }
+
+        public Context(DbContextOptions<Context> options) : base(options)
+        {
+        }
     }
 }
