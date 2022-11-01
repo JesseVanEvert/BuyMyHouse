@@ -10,7 +10,7 @@ namespace BuyMyHouse.DAL
 {
     public class Context : DbContext
     {
-        public DbSet<House> Houses { get; set; }
+        public DbSet<House> House { get; set; }
 
         public Context(DbContextOptions<Context> options) : base(options)
         {

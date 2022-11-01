@@ -1,3 +1,6 @@
+using BuyMyHouse.BLL.Interfaces;
+using BuyMyHouse.Model.DTOs;
+using BuyMyHouse.Model.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BuyMyHouse.API.Controllers
@@ -8,10 +11,12 @@ namespace BuyMyHouse.API.Controllers
     {
 
         private readonly ILogger<HouseController> _logger;
+        private readonly IHouseService _houseService;
 
-        public HouseController(ILogger<HouseController> logger)
+        public HouseController(ILogger<HouseController> logger, IHouseService houseService)
         {
             _logger = logger;
+            _houseService = houseService;
         }
 
         /*[HttpGet(Name = "GetWeatherForecast")]
@@ -19,5 +24,11 @@ namespace BuyMyHouse.API.Controllers
         {
 
         }*/
+
+        [HttpPost(Name = "AddHouse")]
+        public async Task<House> AddHouse([FromBody] HouseDTO houseInfo)
+        {
+            return await _houseService.AddHouse(houseInfo);
+        }
     }
 }
