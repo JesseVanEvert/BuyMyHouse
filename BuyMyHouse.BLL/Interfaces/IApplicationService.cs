@@ -1,5 +1,4 @@
 ﻿using BuyMyHouse.Model.DTOs;
-using BuyMyHouse.Model.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace BuyMyHouse.BLL.Interfaces
 {
-    public interface IHouseService
+    public interface IApplicationService
     {
-        Task<House> AddHouse(HouseDTO houseInfo);
-        Task<IEnumerable<House>> GetAllHousesAsync();
+        Task<string> ApplyToHouse(ApplicationDTO applicationDTO);
     }
 }

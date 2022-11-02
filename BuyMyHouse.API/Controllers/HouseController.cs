@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BuyMyHouse.API.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class HouseController : ControllerBase
     {
 
@@ -19,16 +19,16 @@ namespace BuyMyHouse.API.Controllers
             _houseService = houseService;
         }
 
-        /*[HttpGet(Name = "GetWeatherForecast")]
-        public IEnumerable<WeatherForecast> Get()
+        [HttpPost("AddHouse")]
+        public async Task<IActionResult> AddHouse([FromBody] HouseDTO houseInfo)
         {
+            return Ok(await _houseService.AddHouse(houseInfo));
+        }
 
-        }*/
-
-        [HttpPost(Name = "AddHouse")]
-        public async Task<House> AddHouse([FromBody] HouseDTO houseInfo)
+        [HttpGet("GetAllHouses")]
+        public async Task<IActionResult> GetAllHouses()
         {
-            return await _houseService.AddHouse(houseInfo);
+            return Ok(await _houseService.GetAllHousesAsync());
         }
     }
 }

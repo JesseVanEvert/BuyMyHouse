@@ -17,7 +17,12 @@ namespace BuyMyHouse.BLL
 
         public async Task<House> AddHouse(HouseDTO houseInfo)
         {
-            return await _houseRepository.AddHouse(houseInfo);  
+            return await _houseRepository.AddHouseAsync(houseInfo);  
+        }
+
+        public async Task<IEnumerable<House>> GetAllHousesAsync()
+        {
+            return await _houseRepository.GetAllHousesAsync();
         }
     }
 }

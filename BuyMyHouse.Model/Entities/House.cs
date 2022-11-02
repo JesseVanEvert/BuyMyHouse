@@ -8,5 +8,7 @@
         public string Postcode { get; set; }
         public string Location { get; set; }
         public double AskingPrice { get; set; }
+
+        public virtual ICollection<Application>? Applications { get; set; }
     }
 }

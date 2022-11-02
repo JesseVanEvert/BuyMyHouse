@@ -1,6 +1,7 @@
 ﻿using BuyMyHouse.DAL.Interfaces;
 using BuyMyHouse.Model.DTOs;
 using BuyMyHouse.Model.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace BuyMyHouse.DAL.Repositories
             _context = context;
         }
 
-        public async Task<House> AddHouse(HouseDTO houseInfo)
+        public async Task<House> AddHouseAsync(HouseDTO houseInfo)
         {
             House house = new()
             {
@@ -33,6 +34,11 @@ namespace BuyMyHouse.DAL.Repositories
             await _context.SaveChangesAsync();
 
             return house;
+        }
+
+        public async Task<IEnumerable<House>> GetAllHousesAsync()
+        {
+            return await _context.House.ToListAsync();
         }
     }
 }

@@ -4,6 +4,7 @@ using BuyMyHouse.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BuyMyHouse.DAL.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20221102122800_AddedPersonAndApplication")]
+    partial class AddedPersonAndApplication
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,12 +30,7 @@ namespace BuyMyHouse.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("HouseID")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("ApplicationID");
-
-                    b.HasIndex("HouseID");
 
                     b.ToTable("Application");
                 });
@@ -74,12 +71,8 @@ namespace BuyMyHouse.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("ApplicationID")
+                    b.Property<Guid>("ApplicationID")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Firstname")
                         .IsRequired()
@@ -102,30 +95,20 @@ namespace BuyMyHouse.DAL.Migrations
                     b.ToTable("Person");
                 });
 
-            modelBuilder.Entity("BuyMyHouse.Model.Entities.Application", b =>
-                {
-                    b.HasOne("BuyMyHouse.Model.Entities.House", null)
-                        .WithMany("Applications")
-                        .HasForeignKey("HouseID");
-                });
-
             modelBuilder.Entity("BuyMyHouse.Model.Entities.Person", b =>
                 {
                     b.HasOne("BuyMyHouse.Model.Entities.Application", "Application")
-                        .WithMany("Applicants")
-                        .HasForeignKey("ApplicationID");
+                        .WithMany("Persons")
+                        .HasForeignKey("ApplicationID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Application");
                 });
 
             modelBuilder.Entity("BuyMyHouse.Model.Entities.Application", b =>
                 {
-                    b.Navigation("Applicants");
-                });
-
-            modelBuilder.Entity("BuyMyHouse.Model.Entities.House", b =>
-                {
-                    b.Navigation("Applications");
+                    b.Navigation("Persons");
                 });
 #pragma warning restore 612, 618
         }

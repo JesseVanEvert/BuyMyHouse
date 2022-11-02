@@ -16,6 +16,10 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IHouseService, HouseService>();
 builder.Services.AddScoped<IHouseRepository, HouseRepository>();
+builder.Services.AddScoped<IPersonRepository, PersonRepository>();
+builder.Services.AddScoped<IPersonService, PersonService>();
+builder.Services.AddScoped<IApplicationRepository, ApplicationRepository>();
+builder.Services.AddScoped<IApplicationService, ApplicationService>();
 
 var configuration = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())

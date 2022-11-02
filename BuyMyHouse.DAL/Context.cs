@@ -11,6 +11,8 @@ namespace BuyMyHouse.DAL
     public class Context : DbContext
     {
         public DbSet<House> House { get; set; }
+        public DbSet<Application> Application { get; set; }
+        public DbSet<Person> Person { get; set; }
 
         public Context(DbContextOptions<Context> options) : base(options)
         {

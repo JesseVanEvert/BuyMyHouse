@@ -4,6 +4,7 @@ using BuyMyHouse.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BuyMyHouse.DAL.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20221102123217_AddedRelationShipsBetweenApplicationAndHouse")]
+    partial class AddedRelationShipsBetweenApplicationAndHouse
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -74,12 +76,8 @@ namespace BuyMyHouse.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("ApplicationID")
+                    b.Property<Guid>("ApplicationID")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Firstname")
                         .IsRequired()
@@ -112,15 +110,17 @@ namespace BuyMyHouse.DAL.Migrations
             modelBuilder.Entity("BuyMyHouse.Model.Entities.Person", b =>
                 {
                     b.HasOne("BuyMyHouse.Model.Entities.Application", "Application")
-                        .WithMany("Applicants")
-                        .HasForeignKey("ApplicationID");
+                        .WithMany("Persons")
+                        .HasForeignKey("ApplicationID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Application");
                 });
 
             modelBuilder.Entity("BuyMyHouse.Model.Entities.Application", b =>
                 {
-                    b.Navigation("Applicants");
+                    b.Navigation("Persons");
                 });
 
             modelBuilder.Entity("BuyMyHouse.Model.Entities.House", b =>

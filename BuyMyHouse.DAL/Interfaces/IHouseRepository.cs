@@ -10,6 +10,7 @@ namespace BuyMyHouse.DAL.Interfaces
 {
     public interface IHouseRepository
     {
-        Task<House> AddHouse(HouseDTO houseInfo);
+        Task<House> AddHouseAsync(HouseDTO houseInfo);
+        Task<IEnumerable<House>> GetAllHousesAsync();
     }
 }
