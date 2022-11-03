@@ -7,6 +7,11 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var configuration = new ConfigurationBuilder()
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json", true, true)
+    .Build();
+
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -21,11 +26,8 @@ builder.Services.AddScoped<IPersonService, PersonService>();
 builder.Services.AddScoped<IApplicationRepository, ApplicationRepository>();
 builder.Services.AddScoped<IApplicationService, ApplicationService>();
 builder.Services.AddScoped<IMortgageService, MortgageService>();
+builder.Services.AddSingleton<IPdfRepository>(new PdfRepository(configuration["pdfBlobConnectionString"], configuration["pdfBlobContainer"]));
 
-var configuration = new ConfigurationBuilder()
-    .SetBasePath(Directory.GetCurrentDirectory())
-    .AddJsonFile("appsettings.json", true, true)
-    .Build();
 
 builder.Services.AddDbContext<Context>(options =>
     options.UseSqlServer(configuration["SqlDatabaseConnectionString"]));
@@ -35,6 +37,7 @@ builder.Services.AddStackExchangeRedisCache(options =>
     options.Configuration = configuration["RedisConnectionString"];
     options.InstanceName = "BuyMyHouse_";
 });
+
 
 var app = builder.Build();
 
@@ -52,5 +55,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
 
 

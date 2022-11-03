@@ -11,7 +11,8 @@ namespace BuyMyHouse.BLL.Interfaces
 {
     public interface IMortgageService
     {
-        Task SetApplicationAndMortgageOfferInCache();
-        Task<MemoryStream> GeneratePDFFromMortgage(Guid mortgageID);
+        Task StoreMortgageOffersOfThisDay();
+        Task<MemoryStream> GeneratePDFFromMortgage(Mortgage mortgage);
+        Task<byte[]> GetTemporaryPDFFromCache(Guid mortgageID);
     }
 }

@@ -17,32 +17,42 @@ namespace BuyMyHouse.BLL
     {
         private readonly IDistributedCache _cache;
         private readonly IApplicationRepository _applicationRepository;
+        private readonly IPdfRepository _pdfRepository;
 
-        public MortgageService(IDistributedCache cache, IApplicationRepository applicationRepository)
+        public MortgageService(IDistributedCache cache, IApplicationRepository applicationRepository, IPdfRepository pdfRepository)
         {
             _cache = cache;
             _applicationRepository = applicationRepository;
+            _pdfRepository = pdfRepository;
         }
 
-        public async Task SetApplicationAndMortgageOfferInCache()
+        public async Task StoreMortgageOffersOfThisDay()
         {
             HashSet<Application> applications = _applicationRepository.GetApplicationsOfThisDay();
 
             foreach (Application application in applications)
             {
                 Mortgage mortgage = CalculateMortgage(application);
-                await _cache.SetRecordAsync($"mortgage_{application.ApplicationID}", mortgage);
+                MemoryStream pdfStream = await GeneratePDFFromMortgage(mortgage);
+                //await _pdfRepository.UploadPdfToBlob(application.ApplicationID, pdfStream);
+                await _cache.SetRecordAsync($"mortgage_{application.ApplicationID}", pdfStream.ToArray());
             }
         }
 
-        public async Task<MemoryStream> GeneratePDFFromMortgage(Guid mortgageID)
+        public async Task<MemoryStream> GeneratePDFFromMortgage(Mortgage mortgage)
         {
             //await this.SetApplicationAndMortgageOfferInCache();
             var Renderer = new ChromePdfRenderer();
             //Mortgage mortgage = await _cache.GetRecordAsync<Mortgage>($"mortgage_{mortgageID}");
-            PdfDocument pdf = await Renderer.RenderHtmlAsPdfAsync($"<p>maximum loan: <p>");
+            PdfDocument pdf = await Renderer.RenderHtmlAsPdfAsync($"<p>maximum loan: {mortgage.MaximumLoan} <p>");
 
             return pdf.Stream;
+        }
+
+        public async Task<byte[]> GetTemporaryPDFFromCache(Guid mortgageID)
+        {
+            await StoreMortgageOffersOfThisDay();
+            return await _cache.GetRecordAsync<byte[]>($"mortgage_{mortgageID}");
         }
 
         private static Mortgage CalculateMortgage(Application application)

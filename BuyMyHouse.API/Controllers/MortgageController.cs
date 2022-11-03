@@ -7,7 +7,7 @@ namespace BuyMyHouse.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class MortgageController
+    public class MortgageController : ControllerBase
     {
         private readonly IMortgageService _mortgageService;
 
@@ -19,8 +19,8 @@ namespace BuyMyHouse.API.Controllers
         [HttpGet("GetMortgagePdfDocument")]
         public async Task<IActionResult> GetMortgagePdfDocument(Guid mortgageID)
         {
-            MemoryStream pdfStream = await _mortgageService.GeneratePDFFromMortgage(mortgageID);
-            return new FileStreamResult(pdfStream, "application/pdf");
+            byte[] pdfStream = await _mortgageService.GetTemporaryPDFFromCache(mortgageID);
+            return File(pdfStream, "application/pdf");
         }
     }
 }
