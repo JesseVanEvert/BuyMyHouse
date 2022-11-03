@@ -20,6 +20,7 @@ builder.Services.AddScoped<IPersonRepository, PersonRepository>();
 builder.Services.AddScoped<IPersonService, PersonService>();
 builder.Services.AddScoped<IApplicationRepository, ApplicationRepository>();
 builder.Services.AddScoped<IApplicationService, ApplicationService>();
+builder.Services.AddScoped<IMortgageService, MortgageService>();
 
 var configuration = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
@@ -28,6 +29,12 @@ var configuration = new ConfigurationBuilder()
 
 builder.Services.AddDbContext<Context>(options =>
     options.UseSqlServer(configuration["SqlDatabaseConnectionString"]));
+
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = configuration["RedisConnectionString"];
+    options.InstanceName = "BuyMyHouse_";
+});
 
 var app = builder.Build();
 

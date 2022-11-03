@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="IronPdf" Version="2022.10.9622" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\BuyMyHouse.DAL\BuyMyHouse.DAL.csproj" />
     <ProjectReference Include="..\BuyMyHouse.Model\BuyMyHouse.Model.csproj" />
   </ItemGroup>

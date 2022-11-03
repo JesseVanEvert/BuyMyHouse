@@ -18,11 +18,12 @@ namespace BuyMyHouse.DAL.Repositories
         {
             Application application = new() { 
                 ApplicationID = Guid.NewGuid(),
-                Applicants = new HashSet<Person>()
+                Applicants = new HashSet<Person>(),
+                AppliedAt = DateTime.Now,
             };
 
             Person applicantOne =  await _context.Person.FindAsync(applicationInfo.ApplicantOneID);
-            Person applicantTwo = await _context.Person.FindAsync(applicationInfo.ApplicantOneID);
+            Person applicantTwo = await _context.Person.FindAsync(applicationInfo.ApplicantTwoID);
             House house = await _context.House.FindAsync(applicationInfo.HouseID);
 
 
@@ -45,6 +46,15 @@ namespace BuyMyHouse.DAL.Repositories
             _context.SaveChanges();
 
             return $"Application: {application.ApplicationID} has been added to house: {house.HouseID}";
+        }
+
+        public HashSet<Application> GetApplicationsOfThisDay()
+        {
+            return _context.Application
+                .Where(a => a.AppliedAt.Date == DateTime.Now.Date)
+                .Include(p => p.Applicants)
+                .Include(h => h.House)
+                .ToHashSet();
         }
     }
 }
