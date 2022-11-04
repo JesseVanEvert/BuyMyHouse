@@ -19,8 +19,8 @@ namespace BuyMyHouse.API.Controllers
         [HttpGet("GetMortgagePdfDocument")]
         public async Task<IActionResult> GetMortgagePdfDocument(Guid mortgageID)
         {
-            byte[] pdfStream = await _mortgageService.GetTemporaryPDFFromCache(mortgageID);
-            return File(pdfStream, "application/pdf");
+            byte[] pdfBytes = await _mortgageService.GetTemporaryPDFFromCache(mortgageID);
+            return File(pdfBytes, "application/pdf");
         }
     }
 }

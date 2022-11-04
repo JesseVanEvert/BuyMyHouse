@@ -17,13 +17,12 @@ namespace BuyMyHouse.BLL
     {
         private readonly IDistributedCache _cache;
         private readonly IApplicationRepository _applicationRepository;
-        private readonly IPdfRepository _pdfRepository;
 
-        public MortgageService(IDistributedCache cache, IApplicationRepository applicationRepository, IPdfRepository pdfRepository)
+        public MortgageService(IDistributedCache cache, IApplicationRepository applicationRepository)
         {
             _cache = cache;
             _applicationRepository = applicationRepository;
-            _pdfRepository = pdfRepository;
+            IronPdf.Installation.TempFolderPath = @"/tmp";
         }
 
         public async Task StoreMortgageOffersOfThisDay()
@@ -41,7 +40,6 @@ namespace BuyMyHouse.BLL
 
         public async Task<MemoryStream> GeneratePDFFromMortgage(Mortgage mortgage)
         {
-            //await this.SetApplicationAndMortgageOfferInCache();
             var Renderer = new ChromePdfRenderer();
             //Mortgage mortgage = await _cache.GetRecordAsync<Mortgage>($"mortgage_{mortgageID}");
             PdfDocument pdf = await Renderer.RenderHtmlAsPdfAsync($"<p>maximum loan: {mortgage.MaximumLoan} <p>");
@@ -51,8 +49,12 @@ namespace BuyMyHouse.BLL
 
         public async Task<byte[]> GetTemporaryPDFFromCache(Guid mortgageID)
         {
-            await StoreMortgageOffersOfThisDay();
             return await _cache.GetRecordAsync<byte[]>($"mortgage_{mortgageID}");
+        }
+
+        public HashSet<Application> GetApplicationsOfThisDay()
+        {
+            return _applicationRepository.GetApplicationsOfThisDay();
         }
 
         private static Mortgage CalculateMortgage(Application application)

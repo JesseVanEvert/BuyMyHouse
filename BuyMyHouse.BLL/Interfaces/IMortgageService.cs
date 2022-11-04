@@ -14,5 +14,6 @@ namespace BuyMyHouse.BLL.Interfaces
         Task StoreMortgageOffersOfThisDay();
         Task<MemoryStream> GeneratePDFFromMortgage(Mortgage mortgage);
         Task<byte[]> GetTemporaryPDFFromCache(Guid mortgageID);
+        HashSet<Application> GetApplicationsOfThisDay();
     }
 }

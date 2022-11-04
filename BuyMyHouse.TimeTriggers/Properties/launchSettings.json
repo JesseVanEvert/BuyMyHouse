@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "BuyMyHouse.TimeTriggers": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7032",
+      "launchBrowser": false
+    }
+  }
+}

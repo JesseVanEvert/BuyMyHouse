@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+IronPdf.Installation.TempFolderPath = @"/tmp";
+
 var configuration = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
     .AddJsonFile("appsettings.json", true, true)
@@ -26,7 +28,8 @@ builder.Services.AddScoped<IPersonService, PersonService>();
 builder.Services.AddScoped<IApplicationRepository, ApplicationRepository>();
 builder.Services.AddScoped<IApplicationService, ApplicationService>();
 builder.Services.AddScoped<IMortgageService, MortgageService>();
-builder.Services.AddSingleton<IPdfRepository>(new PdfRepository(configuration["pdfBlobConnectionString"], configuration["pdfBlobContainer"]));
+builder.Services.AddScoped<IEmailService, EmailService>();
+//builder.Services.AddSingleton<IPdfRepository>(new PdfRepository(configuration["pdfBlobConnectionString"], configuration["pdfBlobContainer"]));
 
 
 builder.Services.AddDbContext<Context>(options =>

@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32519.379
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuyMyHouse.API", "BuyMyHouse.API\BuyMyHouse.API.csproj", "{B4924658-D2E7-4F3D-B819-9C2F115C6E16}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuyMyHouse.API", "BuyMyHouse.API\BuyMyHouse.API.csproj", "{B4924658-D2E7-4F3D-B819-9C2F115C6E16}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuyMyHouse.BLL", "BuyMyHouse.BLL\BuyMyHouse.BLL.csproj", "{B719AA3F-B984-48F5-BE1F-66741131074F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuyMyHouse.BLL", "BuyMyHouse.BLL\BuyMyHouse.BLL.csproj", "{B719AA3F-B984-48F5-BE1F-66741131074F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuyMyHouse.DAL", "BuyMyHouse.DAL\BuyMyHouse.DAL.csproj", "{0B09268C-6E5A-453D-8C9C-481BF72379A6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuyMyHouse.DAL", "BuyMyHouse.DAL\BuyMyHouse.DAL.csproj", "{0B09268C-6E5A-453D-8C9C-481BF72379A6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuyMyHouse.Model", "BuyMyHouse.Model\BuyMyHouse.Model.csproj", "{239F957D-B3A8-496C-A97B-A193759C127A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuyMyHouse.Model", "BuyMyHouse.Model\BuyMyHouse.Model.csproj", "{239F957D-B3A8-496C-A97B-A193759C127A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuyMyHouse.TimeTriggers", "BuyMyHouse.TimeTriggers\BuyMyHouse.TimeTriggers.csproj", "{FF7B0684-C524-4BD4-A8D7-C18E29DA964D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{239F957D-B3A8-496C-A97B-A193759C127A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{239F957D-B3A8-496C-A97B-A193759C127A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{239F957D-B3A8-496C-A97B-A193759C127A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF7B0684-C524-4BD4-A8D7-C18E29DA964D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF7B0684-C524-4BD4-A8D7-C18E29DA964D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF7B0684-C524-4BD4-A8D7-C18E29DA964D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF7B0684-C524-4BD4-A8D7-C18E29DA964D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
