@@ -21,7 +21,6 @@ namespace BuyMyHouse.TimeTriggers
     {
         public override void Configure(IFunctionsHostBuilder builder)
         {
-            IronPdf.Installation.TempFolderPath = @"/tmp";
 
             var configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
