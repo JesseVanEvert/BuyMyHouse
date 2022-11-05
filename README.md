@@ -1,7 +1,7 @@
 # BuyMyHouse
 The end assigment of the subject cloud databases
 
-##Setup
+## Setup
 The project is setup for local usage.
 
 ## Redis usage
