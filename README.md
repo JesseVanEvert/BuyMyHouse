@@ -1,8 +1,11 @@
 # BuyMyHouse
 The end assigment of the subject cloud databases
 
+##Setup
+The project is setup for local usage.
+
 ## Redis usage
-The usage of a redis cach has been chosen because the mortgage offers only have to available temporarily.
+The usage of a redis cache has been chosen, because the mortgage offers only have to be available temporarily.
 
 ### Redis configuration
 To download redis for docker execute the command: `docker pull redis`
