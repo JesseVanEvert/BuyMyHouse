@@ -5,6 +5,6 @@ namespace BuyMyHouse.DAL.Interfaces
 {
     public interface IPersonRepository
     {
-        Task<Person> AddPersonAsync(PersonDTO personInfo);
+        Task<FeedbackDTO> AddPersonAsync(PersonDTO personInfo);
     }
 }

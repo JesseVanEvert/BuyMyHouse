@@ -19,7 +19,7 @@ namespace BuyMyHouse.BLL
             _personRepository = personRepository;
         }
 
-        public async Task<Person> AddPersonAsync(PersonDTO personInfo)
+        public async Task<FeedbackDTO> AddPersonAsync(PersonDTO personInfo)
         {
             return await _personRepository.AddPersonAsync(personInfo);
         }

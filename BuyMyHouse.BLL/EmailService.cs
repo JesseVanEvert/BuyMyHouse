@@ -1,5 +1,6 @@
 ﻿using BuyMyHouse.BLL.Interfaces;
 using BuyMyHouse.Model.Entities;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,13 +14,21 @@ namespace BuyMyHouse.BLL
     public class EmailService : IEmailService
     {
         private readonly SmtpClient _smtpClient;
+        private readonly string _email;
 
         public EmailService()
         {
-            _smtpClient = new SmtpClient()
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", true, true)
+                .Build();
+
+            _email = configuration["EmailAddress"];
+
+            _smtpClient = new SmtpClient(configuration["EmailClient"])
             {
                 Port = 587,
-                Credentials = new NetworkCredential("jessesmail.jve@gmail.com", "xrcutgsfjmrjhdch"),
+                Credentials = new NetworkCredential(configuration["EmailAddress"], configuration["EmailPassword"]),
                 EnableSsl = true,
             };
         }
@@ -30,11 +39,12 @@ namespace BuyMyHouse.BLL
             {
                 var mailMessage = new MailMessage
                 {
-                    From = new MailAddress("jessesmail.jve@gmail.com"),
+                    From = new MailAddress(_email),
                     Subject = $"Your application with id: {application.ApplicationID}",
-                    Body = $"<p>{applicant.Email} You can find your application and the mortgage offer at: https://localhost:7026/mortgage/getmortgagepdfdocument?mortgageID={applicant.ApplicationID}</p>",
+                    Body = $"<p>You can find your application and the mortgage offer at: https://localhost:7026/mortgage/getmortgagepdfdocument?mortgageID={applicant.ApplicationID}</p>",
                     IsBodyHtml = true,
                 };
+
                 mailMessage.To.Add("jesse.vanevert@outlook.com");
 
                 _smtpClient.Send(mailMessage);

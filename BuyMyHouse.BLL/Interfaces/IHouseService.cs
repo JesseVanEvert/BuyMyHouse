@@ -10,7 +10,7 @@ namespace BuyMyHouse.BLL.Interfaces
 {
     public interface IHouseService
     {
-        Task<House> AddHouse(HouseDTO houseInfo);
+        Task<FeedbackDTO> AddHouse(HouseDTO houseInfo);
         Task<IEnumerable<House>> GetAllHousesAsync();
     }
 }

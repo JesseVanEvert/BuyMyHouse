@@ -18,7 +18,7 @@ namespace BuyMyHouse.DAL.Repositories
             _context = context;
         }
 
-        public async Task<House> AddHouseAsync(HouseDTO houseInfo)
+        public async Task<FeedbackDTO> AddHouseAsync(HouseDTO houseInfo)
         {
             House house = new()
             {
@@ -31,9 +31,26 @@ namespace BuyMyHouse.DAL.Repositories
             };
 
             await _context.House.AddAsync(house);
-            await _context.SaveChangesAsync();
 
-            return house;
+            try
+            {
+               await _context.SaveChangesAsync();
+            }
+            catch(DbUpdateException dbex)
+            {
+                return new FeedbackDTO()
+                {
+                    Success = false,
+                    Message = "The house could not be added",
+                    Exception = dbex.Message
+                };
+            }
+
+            return new FeedbackDTO()
+            {
+                Success = true,
+                Message = $"The house with id:{house.HouseID} has been added"
+            };
         }
 
         public async Task<IEnumerable<House>> GetAllHousesAsync()

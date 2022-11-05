@@ -5,6 +5,6 @@ namespace BuyMyHouse.BLL.Interfaces
 {
     public interface IPersonService
     {
-        Task<Person> AddPersonAsync(PersonDTO personInfo);
+        Task<FeedbackDTO> AddPersonAsync(PersonDTO personInfo);
     }
 }

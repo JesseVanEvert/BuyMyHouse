@@ -16,6 +16,14 @@ namespace BuyMyHouse.DAL
 
         public Context(DbContextOptions<Context> options) : base(options)
         {
+
+        }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<Person>()
+                .HasIndex(p => p.Email)
+                .IsUnique();
         }
     }
 }

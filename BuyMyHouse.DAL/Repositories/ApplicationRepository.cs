@@ -14,7 +14,7 @@ namespace BuyMyHouse.DAL.Repositories
             _context = context;
         }
 
-        public async Task<string> ApplyToHouse(ApplicationDTO applicationInfo)
+        public async Task<FeedbackDTO> ApplyToHouse(ApplicationDTO applicationInfo)
         {
             Application application = new() { 
                 ApplicationID = Guid.NewGuid(),
@@ -31,10 +31,10 @@ namespace BuyMyHouse.DAL.Repositories
                  application.Applicants.Add(applicantTwo);
 
             if (applicantOne == null)
-                return "The primary applicant has not been found";
+                return new FeedbackDTO() { Success = false, Message = "The primary applicant has not been found" };
 
             if (house == null)
-                return "The house has not been found";
+                return new FeedbackDTO() { Success = false, Message = "The house has not been found" };
 
             application.Applicants.Add(applicantOne);
 
@@ -43,15 +43,37 @@ namespace BuyMyHouse.DAL.Repositories
 
             await _context.Application.AddAsync(application);
 
-            _context.SaveChanges();
+            try
+            {
+               await _context.SaveChangesAsync();
+            } 
+            catch (DbUpdateException dbex)
+            {
+                return new FeedbackDTO()
+                {
+                    Success = false,
+                    Message = "The application failed",
+                    Exception = dbex.Message
+                };
+            }
+            
 
-            return $"Application: {application.ApplicationID} has been added to house: {house.HouseID}";
+            return new FeedbackDTO() { Success = true, Message = $"Successfully applied to house. Application id: {application.ApplicationID}"};
         }
 
         public HashSet<Application> GetApplicationsOfThisDay()
         {
             return _context.Application
                 .Where(a => a.AppliedAt.Date == DateTime.Now.Date)
+                .Include(p => p.Applicants)
+                .Include(h => h.House)
+                .ToHashSet();
+        }
+
+        public HashSet<Application> GetApplicationsOfYesterday()
+        {
+            return _context.Application
+                .Where(a => a.AppliedAt.Date == DateTime.Now.AddDays(-1).Date)
                 .Include(p => p.Applicants)
                 .Include(h => h.House)
                 .ToHashSet();

@@ -5,7 +5,8 @@ namespace BuyMyHouse.DAL.Interfaces
 {
     public interface IApplicationRepository
     {
-        Task<string> ApplyToHouse(ApplicationDTO applicationInfo);
+        Task<FeedbackDTO> ApplyToHouse(ApplicationDTO applicationInfo);
         HashSet<Application> GetApplicationsOfThisDay();
+        HashSet<Application> GetApplicationsOfYesterday();
     }
 }

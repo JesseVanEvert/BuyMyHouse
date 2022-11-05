@@ -17,9 +17,9 @@ namespace BuyMyHouse.TimeTriggers
         }
 
         [FunctionName("CreateMortgageOffers")]
-        public async Task Run([TimerTrigger("*/10 * * * * *")] TimerInfo myTimer, ILogger log)
+        public async Task Run([TimerTrigger("* * 23 * * *")] TimerInfo myTimer, ILogger log)
         {
-            await _mortgageService.StoreMortgageOffersOfThisDay();
+            await _mortgageService.StoreMortgageOffersOfThisDayInCache();
         }
     }
 }

@@ -19,7 +19,12 @@ namespace BuyMyHouse.API.Controllers
         [HttpPost("AddPerson")]
         public async Task<IActionResult> AddPerson([FromBody] PersonDTO personInfo)
         {
-            return Ok(await _personService.AddPersonAsync(personInfo));
+            FeedbackDTO addPersonFeedback = await _personService.AddPersonAsync(personInfo);
+
+            if (!addPersonFeedback.Success)
+                return StatusCode(500, addPersonFeedback);
+
+            return Ok(addPersonFeedback);
         } 
     }
 }

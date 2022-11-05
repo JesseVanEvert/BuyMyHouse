@@ -22,13 +22,23 @@ namespace BuyMyHouse.API.Controllers
         [HttpPost("AddHouse")]
         public async Task<IActionResult> AddHouse([FromBody] HouseDTO houseInfo)
         {
-            return Ok(await _houseService.AddHouse(houseInfo));
+            FeedbackDTO addHouseFeedback = await _houseService.AddHouse(houseInfo);
+
+            if (!addHouseFeedback.Success)
+                return StatusCode(500, addHouseFeedback);
+
+            return Ok(addHouseFeedback);
         }
 
         [HttpGet("GetAllHouses")]
         public async Task<IActionResult> GetAllHouses()
         {
-            return Ok(await _houseService.GetAllHousesAsync());
+            IEnumerable<House> houses = await _houseService.GetAllHousesAsync();
+
+            if(houses == null || houses.Any() == false)
+                return NotFound("No houses have been found");
+
+            return Ok(houses);
         }
     }
 }

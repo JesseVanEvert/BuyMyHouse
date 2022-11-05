@@ -18,7 +18,12 @@ namespace BuyMyHouse.API.Controllers
         [HttpPost("ApplyToHouse")]
         public async Task<IActionResult> ApplyToHouse([FromBody] ApplicationDTO applicationInfo)
         {
-            return Ok(await _applicationService.ApplyToHouse(applicationInfo));
+            FeedbackDTO applicationFeedback = await _applicationService.ApplyToHouse(applicationInfo);
+
+            if (!applicationFeedback.Success)
+                return StatusCode(500, applicationFeedback);
+
+            return Ok(applicationFeedback);
         }
     }
 }

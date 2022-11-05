@@ -25,36 +25,35 @@ namespace BuyMyHouse.BLL
             _applicationRepository = applicationRepository;
         }
 
-        public async Task StoreMortgageOffersOfThisDay()
+        public async Task StoreMortgageOffersOfThisDayInCache()
         {
             HashSet<Application> applications = _applicationRepository.GetApplicationsOfThisDay();
+
+            if(applications.Count == 0)
+                return;
 
             foreach (Application application in applications)
             {
                 Mortgage mortgage = CalculateMortgage(application);
                 byte[] pdfStream = await GeneratePDFFromMortgage(mortgage);
-                //await _pdfRepository.UploadPdfToBlob(application.ApplicationID, pdfStream);
                 await _cache.SetRecordAsync($"mortgage_{application.ApplicationID}", pdfStream.ToArray());
             }
         }
-
-        /*public async Task<MemoryStream> GeneratePDFFromMortgage(Mortgage mortgage)
-        {
-            var Renderer = new ChromePdfRenderer();
-            //Mortgage mortgage = await _cache.GetRecordAsync<Mortgage>($"mortgage_{mortgageID}");
-            PdfDocument pdf = await Renderer.RenderHtmlAsPdfAsync($"<p>maximum loan: {mortgage.MaximumLoan} <p>");
-
-            return pdf.Stream;
-        }*/
 
         public async Task<byte[]> GeneratePDFFromMortgage(Mortgage mortgage)
         {
             PdfDocument mortgageOffer = new();
             PdfPage page = mortgageOffer.AddPage();
             XGraphics gfx = XGraphics.FromPdfPage(page);
-            XFont font = new("Verdana", 20, XFontStyle.Bold); 
+            XFont font = new("Verdana", 14, XFontStyle.Bold); 
+            gfx.DrawString($"Postcode: {mortgage.Application.House.Postcode}", font, XBrushes.Black,
+                new XRect(0, 0, page.Width, page.Height), XStringFormats.Center);
+
             gfx.DrawString($"Maximum loan value: {mortgage.MaximumLoan}", font, XBrushes.Black,
-            new XRect(0, 0, page.Width, page.Height), XStringFormats.Center);
+                new XRect(0, 25, page.Width, page.Height), XStringFormats.Center);
+
+            gfx.DrawString($"Monthly payment: {Math.Round(mortgage.MonthlyPayment, 2, MidpointRounding.ToEven)}", font, XBrushes.Black,
+            new XRect(0, 50, page.Width, page.Height), XStringFormats.Center);
 
             MemoryStream stream = new MemoryStream();
             mortgageOffer.Save(stream);
@@ -73,6 +72,11 @@ namespace BuyMyHouse.BLL
             return _applicationRepository.GetApplicationsOfThisDay();
         }
 
+        public HashSet<Application> GetApplicationsOfYesterday()
+        {
+            return _applicationRepository.GetApplicationsOfYesterday();
+        }
+
         private static Mortgage CalculateMortgage(Application application)
         {
             Mortgage mortgage = new();
@@ -80,12 +84,12 @@ namespace BuyMyHouse.BLL
             double maximumLoan = 0;
 
             foreach (Person applicant in application.Applicants)
-                maximumLoan += applicant.YearlyIncomeInEuros * 2.5;
+                maximumLoan += applicant.YearlyIncomeInEuros * 4.5;
 
             double interestRate = 4.9;
             double monthlyRate = interestRate / 100 / 12;
             int monthsOfPayments = 360;
-            double monthlyPayment = maximumLoan * (monthlyRate * Math.Pow(1 + monthlyRate, monthsOfPayments) / Math.Pow(1 + monthlyRate, monthsOfPayments) - 1);
+            double monthlyPayment = maximumLoan * monthlyRate * Math.Pow(1 + monthlyRate, monthsOfPayments) / Math.Pow(1 + monthlyRate, monthsOfPayments) - 1;
 
             mortgage.Application = application;
             mortgage.InterestRate = interestRate;

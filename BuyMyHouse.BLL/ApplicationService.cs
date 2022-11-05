@@ -18,7 +18,7 @@ namespace BuyMyHouse.BLL
             _applicationRepository = applicationRepository;
         }
 
-        public async Task<string> ApplyToHouse(ApplicationDTO applicationDTO)
+        public async Task<FeedbackDTO> ApplyToHouse(ApplicationDTO applicationDTO)
         {
             return await _applicationRepository.ApplyToHouse(applicationDTO);
         }

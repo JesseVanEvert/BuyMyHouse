@@ -9,6 +9,6 @@ namespace BuyMyHouse.BLL.Interfaces
 {
     public interface IApplicationService
     {
-        Task<string> ApplyToHouse(ApplicationDTO applicationDTO);
+        Task<FeedbackDTO> ApplyToHouse(ApplicationDTO applicationDTO);
     }
 }

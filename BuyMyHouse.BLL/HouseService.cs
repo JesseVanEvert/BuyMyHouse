@@ -15,7 +15,7 @@ namespace BuyMyHouse.BLL
             _houseRepository = houseRepository; 
         }
 
-        public async Task<House> AddHouse(HouseDTO houseInfo)
+        public async Task<FeedbackDTO> AddHouse(HouseDTO houseInfo)
         {
             return await _houseRepository.AddHouseAsync(houseInfo);  
         }

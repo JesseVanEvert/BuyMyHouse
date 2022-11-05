@@ -19,6 +19,10 @@ namespace BuyMyHouse.API.Controllers
         public async Task<IActionResult> GetMortgagePdfDocument(Guid mortgageID)
         {
             byte[] pdfBytes = await _mortgageService.GetTemporaryPDFFromCache(mortgageID);
+
+            if (pdfBytes == null || pdfBytes.Length == 0)
+                return NotFound("The specified pdf has not been found.");
+
             return File(pdfBytes, "application/pdf");
         }
     }

@@ -22,13 +22,13 @@ namespace BuyMyHouse.TimeTriggers
         }
 
         [FunctionName("SendEmailToApplicants")]
-        public void Run([TimerTrigger("0 33 15 * * *")] TimerInfo myTimer, ILogger log)
+        public void Run([TimerTrigger("* * 6 * * *")] TimerInfo myTimer, ILogger log)
         {
-            HashSet<Application> applications = _mortgageService.GetApplicationsOfThisDay();
+            HashSet<Application> applications = _mortgageService.GetApplicationsOfYesterday();
 
             foreach (Application application in applications)
             {
-                _emailService.SendEmailToApplicants(application);
+              _emailService.SendEmailToApplicants(application);
             }
         }
     }
